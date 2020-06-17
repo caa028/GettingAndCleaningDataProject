@@ -1,5 +1,12 @@
-# library(dplyr)
-# library(data.table)
+# R script performing data set manipulations to satisfy the requirements
+# of the course project.
+#
+# The script expects the original data set downloaded from
+# https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+# to be un-zipped in the current working directory
+
+# we will use dplyr package for data frame manipulations
+library(dplyr)
 
 # read the descriptive names of the variables in the data set
 features <- read.table("UCI HAR Dataset/features.txt")
@@ -54,6 +61,24 @@ x1 <- x[,c(grep("(-mean|-std)[[:punct:]]", ignore.case = TRUE, features$V2))]
 # create new data frame satisfying the requirements from
 # steps 1, 2, 3, 4 of the assignment
 answer <- cbind(x1, subject, as.data.frame(verboseActivities))
-answer1 <- group_by(answer, DetectedActivity)
-answer2 <- group_by(answer1, SubjectId, .add = TRUE)
+# clean-up and tidying of column names
+colnames(answer) <- gsub("-std..-*(.*)", "\\1StandardDeviation", colnames(answer))
+colnames(answer) <- gsub("-mean..-*(.*)", "\\1Mean", colnames(answer))
+colnames(answer) <- gsub("^f", "FrequencyDomain", colnames(answer))
+colnames(answer) <- gsub("^t", "TimeDomain", colnames(answer))
+# fix the apparent error in column names of the original data set (double Body)
+colnames(answer) <- gsub("BodyBody", "Body", colnames(answer))
+# at this point "answer" data frame satisfies all the requirements of step 4
+
+# now let's work on satisfying the requirements of step 5...
+#
+# group data frame per detected activity and then per subject ID
+answer1 <- group_by(answer, DetectedActivity, SubjectId)
+# generate the new data frame satisfying the requirement of step 5
+tidyDataSet <- summarise_all(answer1, mean)
+# modify the column names to reflect their new content
+colnames(tidyDataSet) <- gsub("^(T|F)", "Averaged\\1", colnames(tidyDataSet))
+
+# dump the tidyDataSet into a CSV file for final submission
+write.csv(tidyDataSet, "tidyDataSet.csv")
 
