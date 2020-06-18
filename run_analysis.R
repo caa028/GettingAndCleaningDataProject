@@ -82,3 +82,6 @@ colnames(tidyDataSet) <- gsub("^(T|F)", "Averaged\\1", colnames(tidyDataSet))
 # dump the tidyDataSet into a CSV file for final submission
 write.csv(tidyDataSet, "tidyDataSet.csv")
 
+# dump the tidyDataSet into a txt file (according to the new reqirement revealed during submission)
+write.table(tidyDataSet, "tidyDataSet.txt", row.name=FALSE)
+
