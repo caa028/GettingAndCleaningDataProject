@@ -20,3 +20,6 @@ The raw data for the project has been obtained from the [UCI HAR Dataset](https:
 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
 [tidyDataSet.csv](tidyDataSet.csv) - the new tidy data set satisfying all the requirements of the assignment (independent, tidy, with average of each variable for each activity and each subject)
+
+[tidyDataSet.txt](tidyDataSet.txt) - the new tidy data set satisfying all the requirements of the assignment (independent, tidy, with average of each variable for each activity and each subject). Submitted in addition to the CSV formatted (new requirement revealed during project submission).
+
